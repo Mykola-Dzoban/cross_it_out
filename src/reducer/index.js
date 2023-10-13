@@ -5,14 +5,22 @@ const themes = {
 	light: 'myLight',
 };
 
+const getThemeFromLocalStorage = () => {
+	const theme = localStorage.getItem('theme') || themes.light;
+	document.documentElement.setAttribute('data-theme', theme);
+	return theme;
+};
+
+const initialState = {
+	value: 0,
+	months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+	tasks: [],
+	theme: getThemeFromLocalStorage(),
+};
+
 export const streakSlice = createSlice({
 	name: 'streak',
-	initialState: {
-		value: 0,
-		months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-		tasks: [],
-		theme: themes.light,
-	},
+	initialState,
 	reducers: {
 		increment: (state) => {
 			state.value += 1;
@@ -21,10 +29,11 @@ export const streakSlice = createSlice({
 			state.tasks.push(actions.payload);
 		},
 		toggleTheme: (state, actions) => {
-            const { light, dark } = themes;
+			const { light, dark } = themes;
 			state.theme = state.theme === dark ? light : dark;
-            document.documentElement.setAttribute('data-theme', state.theme);
-        },
+			document.documentElement.setAttribute('data-theme', state.theme);
+			localStorage.setItem('theme', state.theme);
+		},
 	},
 });
 
