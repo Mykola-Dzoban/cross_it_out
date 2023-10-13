@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleTask } from '../reducer';
+import { toggleTask, updateProgress } from '../reducer';
 
 const Tasks = () => {
 	const tasks = useSelector((state) => state.streak.tasks);
@@ -17,7 +17,10 @@ const Tasks = () => {
 									type="checkbox"
 									defaultChecked={isDone}
 									className="checkbox checkbox-secondary checkbox-sm"
-									onChange={() => dispatch(toggleTask(id))}
+									onChange={() => {
+										dispatch(toggleTask(id));
+										dispatch(updateProgress());
+									}}
 								/>
 								<p className={`text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
 							</div>

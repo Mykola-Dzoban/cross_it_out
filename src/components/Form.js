@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTask } from '../reducer';
+import { addTask, updateProgress } from '../reducer';
 
 const Form = () => {
 	const dispatch = useDispatch();
@@ -38,6 +38,7 @@ const Form = () => {
 							className="btn btn-secondary"
 							onClick={() => {
 								dispatch(addTask({ id: nanoid(), task, isDone: false }));
+                                dispatch(updateProgress());
 								setTask('');
 							}}>
 							add task

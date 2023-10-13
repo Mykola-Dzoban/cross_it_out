@@ -15,9 +15,13 @@ const getTasksFromLocalStorage = () => {
 	const tasks = localStorage.getItem('tasks') || '[]';
 	return JSON.parse(tasks);
 };
+const getProgressFromLocalStorage = () => {
+	const tasks = localStorage.getItem('progress') || '0';
+	return JSON.parse(tasks);
+};
 
 const initialState = {
-	value: 0,
+	progress: getProgressFromLocalStorage(),
 	tasks: getTasksFromLocalStorage(),
 	theme: getThemeFromLocalStorage(),
 };
@@ -46,12 +50,16 @@ export const streakSlice = createSlice({
 			});
 			localStorage.setItem('tasks', JSON.stringify(state.tasks));
 		},
-		countDoneTasks: (state) => {
-			state.value += 1;
+		updateProgress: (state) => {
+			const totalTasks = state.tasks.length;
+			const doneTasks = state.tasks.filter((task) => task.isDone).length;
+			const progress = (doneTasks / totalTasks) * 100;
+			state.progress = progress;
+			localStorage.setItem('progress', JSON.stringify(state.progress));
 		},
 	},
 });
 
-export const { addTask, toggleTheme, toggleTask } = streakSlice.actions;
+export const { addTask, toggleTheme, toggleTask, updateProgress } = streakSlice.actions;
 
 export default streakSlice.reducer;
