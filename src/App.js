@@ -1,10 +1,11 @@
+import { useSelector } from 'react-redux';
 import Card from './components/Card';
 import Form from './components/Form';
 import Navbar from './components/Navbar';
 import Tasks from './components/Tasks';
 
 export const App = () => {
-	// const tasks = useSelector((state) => state.streak.tasks);
+	const tasks = useSelector((state) => state.streak.tasks);
 
 	return (
 		<div className="container mx-auto py-10 ">
@@ -14,9 +15,11 @@ export const App = () => {
 					<Card />
 					<Form />
 				</div>
-				<div className="w-full flex justify-center items-center flex-col">
-					<Tasks />
-				</div>
+				{tasks.length !== 0 && (
+					<div className="w-full flex justify-center items-center flex-col">
+						<Tasks />
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -38,7 +38,7 @@ const Form = () => {
 							className="btn btn-secondary"
 							onClick={() => {
 								dispatch(addTask({ id: nanoid(), task, isDone: false }));
-                                dispatch(updateProgress());
+								dispatch(updateProgress());
 								setTask('');
 							}}>
 							add task

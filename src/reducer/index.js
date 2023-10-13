@@ -55,11 +55,19 @@ export const streakSlice = createSlice({
 			const doneTasks = state.tasks.filter((task) => task.isDone).length;
 			const progress = (doneTasks / totalTasks) * 100;
 			state.progress = progress;
+			if (state.tasks.length === 0) {
+				state.progress = 0;
+			}
 			localStorage.setItem('progress', JSON.stringify(state.progress));
+		},
+		deleteTask: (state, actions) => {
+			const id = actions.payload;
+			state.tasks = state.tasks.filter((item) => item.id !== id);
+			localStorage.setItem('tasks', JSON.stringify(state.tasks));
 		},
 	},
 });
 
-export const { addTask, toggleTheme, toggleTask, updateProgress } = streakSlice.actions;
+export const { addTask, toggleTheme, toggleTask, updateProgress, deleteTask } = streakSlice.actions;
 
 export default streakSlice.reducer;
