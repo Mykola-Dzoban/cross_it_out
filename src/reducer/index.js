@@ -11,10 +11,14 @@ const getThemeFromLocalStorage = () => {
 	return theme;
 };
 
+const getTasksFromLocalStorage = () => {
+	const tasks = localStorage.getItem('tasks') || '[]';
+	return JSON.parse(tasks);
+};
+
 const initialState = {
 	value: 0,
-	months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-	tasks: [],
+	tasks: getTasksFromLocalStorage(),
 	theme: getThemeFromLocalStorage(),
 };
 
@@ -22,11 +26,9 @@ export const streakSlice = createSlice({
 	name: 'streak',
 	initialState,
 	reducers: {
-		increment: (state) => {
-			state.value += 1;
-		},
 		addTask: (state, actions) => {
 			state.tasks.push(actions.payload);
+			localStorage.setItem('tasks', JSON.stringify(state.tasks));
 		},
 		toggleTheme: (state, actions) => {
 			const { light, dark } = themes;
@@ -34,9 +36,22 @@ export const streakSlice = createSlice({
 			document.documentElement.setAttribute('data-theme', state.theme);
 			localStorage.setItem('theme', state.theme);
 		},
+		toggleTask: (state, actions) => {
+			const id = actions.payload;
+			state.tasks = state.tasks.map((item) => {
+				if (item.id === id) {
+					item.isDone = !item.isDone;
+				}
+				return item;
+			});
+			localStorage.setItem('tasks', JSON.stringify(state.tasks));
+		},
+		countDoneTasks: (state) => {
+			state.value += 1;
+		},
 	},
 });
 
-export const { increment, addTask, toggleTheme } = streakSlice.actions;
+export const { addTask, toggleTheme, toggleTask } = streakSlice.actions;
 
 export default streakSlice.reducer;
