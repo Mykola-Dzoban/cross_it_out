@@ -24,6 +24,7 @@ const initialState = {
 	progress: getProgressFromLocalStorage(),
 	tasks: getTasksFromLocalStorage(),
 	theme: getThemeFromLocalStorage(),
+	showSuccessModal: false
 };
 
 export const streakSlice = createSlice({
@@ -57,6 +58,12 @@ export const streakSlice = createSlice({
 			state.progress = progress;
 			if (state.tasks.length === 0) {
 				state.progress = 0;
+			}
+			if (state.progress === 100) {
+				state.showSuccessModal = true;
+			}
+			else{
+				state.showSuccessModal = false;
 			}
 			localStorage.setItem('progress', JSON.stringify(state.progress));
 		},

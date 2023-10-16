@@ -1,9 +1,17 @@
 import { nanoid } from 'nanoid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTask, updateProgress } from '../reducer';
 
 const Form = () => {
+	const [showAlert, setShowAlert] = useState(false);
+	const [timeoutId, setTimeoutId] = useState(null);
+
+	useEffect(() => {
+		if (!showAlert) {
+			clearTimeout(timeoutId);
+		}
+	}, [showAlert, timeoutId]);
 	const dispatch = useDispatch();
 
 	const date = new Date().toDateString();
@@ -14,11 +22,19 @@ const Form = () => {
 		e.preventDefault();
 		setTask(e.target.value);
 	};
+
+	// const checkTask = (task) => {
+	// 	if (!task?.trim()) {
+	// 		return 'input-error';
+	// 	}
+	// 	return '';
+	// };
+
 	return (
 		<div className="card bg-base-100 shadow-md w-full md:w-6/12">
 			<div className="card-body">
 				<div className="flex flex-col w-full gap-4 items-center">
-					<div className="form-control w-full flex flex-col items-center">
+					<form className="form-control w-full flex flex-col items-center">
 						<label className="label">
 							<span className="label-text">What is your task for today?</span>
 						</label>
@@ -27,22 +43,34 @@ const Form = () => {
 							value={task}
 							type="text"
 							placeholder="Type here"
-							className="input input-bordered w-full max-w-xs"
+							className={`input input-bordered w-full max-w-xs`}
 						/>
 						<label className="label">
 							<span className="label-text-alt">{date}</span>
 						</label>
-					</div>
+					</form>
 					<div>
 						<button
 							className="btn btn-secondary"
 							onClick={() => {
-								dispatch(addTask({ id: nanoid(), task, isDone: false }));
-								dispatch(updateProgress());
-								setTask('');
+								if (task?.trim()) {
+									dispatch(addTask({ id: nanoid(), task: task.trim(), isDone: false }));
+									dispatch(updateProgress());
+									setTask('');
+									setShowAlert(true);
+									const id = setTimeout(() => {
+										setShowAlert(false);
+									}, 2000);
+									setTimeoutId(id);
+								}
 							}}>
 							add task
 						</button>
+					</div>
+					<div id="toastTasks" className="toast toast-end">
+						<div className={`alert alert-info ${!showAlert && 'hidden'}`}>
+							<span className="font-bold">Task added successfully.</span>
+						</div>
 					</div>
 				</div>
 			</div>
