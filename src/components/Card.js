@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux';
 const Card = () => {
 	const progress = useSelector((state) => state.streak.progress);
 	const showSuccessModal = useSelector((state) => state.streak.showSuccessModal);
+	const tasks = useSelector((state) => state.streak.tasks);
 
 	return (
-		<div className="tooltip tooltip-bottom" data-tip="Finish task and cross this word">
+		<div className="tooltip tooltip-bottom" data-tip={`Finish ${tasks.length === 1 ? 'task' : 'tasks'} and cross this word`}>
 			<div className="card w-auto glass border-2 border-gray-300">
 				<div className="card-body">
 					<div className="w-full flex gap-1 flex-wrap  relative">

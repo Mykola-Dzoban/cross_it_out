@@ -9,15 +9,15 @@ const Navbar = () => {
 	};
 
 	return (
-		<div className="navbar flex justify-between border-b-2 border-gray-300">
+		<div className="navbar flex justify-between border-b-2 border-gray-300 container mx-auto py-10">
 			<div className="navbar-center">
 				<div className="indicator">
-					<span className="indicator-item badge badge-accent">beta</span>
+					<span className="indicator-item badge badge-accent font-bold">v1.1.0</span>
 					<h1 className="text-3xl font-bold whitespace-normal">Cross it out</h1>
 				</div>
 			</div>
 			<div className="navbar-end flex items-center gap-2">
-				<button className="btn btn-ghost btn-circle">
+				{/* <button className="btn btn-ghost btn-circle">
 					<div className="indicator">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ const Navbar = () => {
 						</svg>
 						<span className="indicator-item badge badge-accent badge-xs text-[10px]">beta</span>
 					</div>
-				</button>
+				</button> */}
 				<label className="swap swap-rotate">
 					<input type="checkbox" onClick={handleTheme} />
 					{/* sun icon */}

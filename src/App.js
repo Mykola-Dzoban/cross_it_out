@@ -1,26 +1,25 @@
-import { useSelector } from 'react-redux';
-import Card from './components/Card';
-import Form from './components/Form';
-import Navbar from './components/Navbar';
-import Tasks from './components/Tasks';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import HomeLayout from './components/HomeLayout';
+import MainPage from './components/MainPage';
+import WelcomePage from './components/WelcomePage';
+
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <HomeLayout />,
+		children: [
+			{
+				index: true,
+				element: <WelcomePage />,
+			},
+			{
+				path: '/main',
+				element: <MainPage />,
+			},
+		],
+	},
+]);
 
 export const App = () => {
-	const tasks = useSelector((state) => state.streak.tasks);
-
-	return (
-		<div className="container mx-auto py-10 ">
-			<Navbar />
-			<div className="flex flex-col items-center gap-4 ">
-				<div className="w-full flex justify-between items-center flex-col md:flex-row gap-4">
-					<Card />
-					<Form />
-				</div>
-				{tasks.length !== 0 && (
-					<div className="w-full flex justify-center items-center flex-col">
-						<Tasks />
-					</div>
-				)}
-			</div>
-		</div>
-	);
+	return <RouterProvider router={router} />;
 };
