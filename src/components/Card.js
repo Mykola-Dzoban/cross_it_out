@@ -1,9 +1,14 @@
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const Card = () => {
 	const progress = useSelector((state) => state.streak.progress);
 	const showSuccessModal = useSelector((state) => state.streak.showSuccessModal);
 	const tasks = useSelector((state) => state.streak.tasks);
+
+	if (showSuccessModal) {
+		toast.success('All tasks are done.');
+	}
 
 	return (
 		<div className="tooltip tooltip-bottom" data-tip={`Finish ${tasks.length === 1 ? 'task' : 'tasks'} and cross this word`}>
@@ -20,11 +25,11 @@ const Card = () => {
 					</div>
 				</div>
 			</div>
-			<div id="toastTasks" className="toast toast-end">
-				<div className={`alert alert-success ${!showSuccessModal && 'hidden'}`}>
+			{/* <div id="toastTasks" className="toast toast-end">
+				<div className={`z-30 alert alert-success ${!showSuccessModal && 'hidden'}`}>
 					<span className="text-slate-100 font-bold">All tasks are done.</span>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 };
