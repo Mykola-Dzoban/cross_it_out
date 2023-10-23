@@ -1,37 +1,34 @@
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTask, updateProgress } from '../reducer';
+import { toast } from 'react-toastify';
 
 const Form = () => {
-	const [showAlert, setShowAlert] = useState(false);
-	const [timeoutId, setTimeoutId] = useState(null);
-
-	useEffect(() => {
-		if (!showAlert) {
-			clearTimeout(timeoutId);
-		}
-	}, [showAlert, timeoutId]);
 	const dispatch = useDispatch();
+	const theme = useSelector((state) => state.streak.theme);
+
+	const [task, setTask] = useState('');
+	const [showAlert, setShowAlert] = useState(false);
 
 	const date = new Date().toDateString();
 
-	const [task, setTask] = useState('');
+	useEffect(() => {
+		if (showAlert) {
+			toast.success('Task added successfully.', {
+				theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+			});
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showAlert]);
 
 	const handleTask = (e) => {
 		e.preventDefault();
 		setTask(e.target.value);
 	};
 
-	// const checkTask = (task) => {
-	// 	if (!task?.trim()) {
-	// 		return 'input-error';
-	// 	}
-	// 	return '';
-	// };
-
 	return (
-		<div className="card bg-base-100 shadow-md w-full md:w-6/12">
+		<div className="card bg-base-100 w-full lg:w-6/12 border-2 border-gray-300">
 			<div className="card-body">
 				<div className="flex flex-col w-full gap-4 items-center">
 					<form className="form-control w-full flex flex-col items-center">
@@ -58,19 +55,13 @@ const Form = () => {
 									dispatch(updateProgress());
 									setTask('');
 									setShowAlert(true);
-									const id = setTimeout(() => {
+									setTimeout(() => {
 										setShowAlert(false);
 									}, 2000);
-									setTimeoutId(id);
 								}
 							}}>
 							add task
 						</button>
-					</div>
-					<div id="toastTasks" className="toast toast-end">
-						<div className={`alert alert-info ${!showAlert && 'hidden'}`}>
-							<span className="font-bold">Task added successfully.</span>
-						</div>
 					</div>
 				</div>
 			</div>

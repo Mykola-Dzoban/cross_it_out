@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toggleTheme } from '../reducer';
 
 const Navbar = () => {
@@ -11,10 +12,9 @@ const Navbar = () => {
 	return (
 		<div className="navbar flex justify-between border-b-2 border-gray-300 container mx-auto py-10">
 			<div className="navbar-center">
-				<div className="indicator">
-					<span className="indicator-item badge badge-accent font-bold">v1.1.0</span>
-					<h1 className="text-3xl font-bold whitespace-normal">Cross it out</h1>
-				</div>
+				<Link to="/main" className="text-3xl font-bold whitespace-normal btn btn-ghost">
+					Cross it out
+				</Link>
 			</div>
 			<div className="navbar-end flex items-center gap-2">
 				{/* <button className="btn btn-ghost btn-circle">

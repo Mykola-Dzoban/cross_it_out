@@ -19,12 +19,22 @@ const getProgressFromLocalStorage = () => {
 	const tasks = localStorage.getItem('progress') || '0';
 	return JSON.parse(tasks);
 };
+const getDoneTasksFromLocalStorage = () => {
+	const tasks = localStorage.getItem('doneTasks') || '0';
+	return JSON.parse(tasks);
+};
+const getDoneTasksBoolFromLocalStorage = () => {
+	const tasks = localStorage.getItem('doneTasksBool');
+	return JSON.parse(tasks);
+};
 
 const initialState = {
 	progress: getProgressFromLocalStorage(),
 	tasks: getTasksFromLocalStorage(),
 	theme: getThemeFromLocalStorage(),
-	showSuccessModal: false
+	showSuccessModal: false,
+	doneTasksCount: getDoneTasksFromLocalStorage(),
+	doneTasksBool: getDoneTasksBoolFromLocalStorage(),
 };
 
 export const streakSlice = createSlice({
@@ -54,27 +64,54 @@ export const streakSlice = createSlice({
 		updateProgress: (state) => {
 			const totalTasks = state.tasks.length;
 			const doneTasks = state.tasks.filter((task) => task.isDone).length;
+			state.doneTasksCount = doneTasks;
 			const progress = (doneTasks / totalTasks) * 100;
 			state.progress = progress;
+			state.doneTasksBool = false;
 			if (state.tasks.length === 0) {
 				state.progress = 0;
+				state.doneTasksCount = 0;
 			}
 			if (state.progress === 100) {
 				state.showSuccessModal = true;
-			}
-			else{
+				state.doneTasksBool = true;
+			} else {
 				state.showSuccessModal = false;
 			}
 			localStorage.setItem('progress', JSON.stringify(state.progress));
+			localStorage.setItem('doneTasks', JSON.stringify(state.doneTasksCount));
 		},
 		deleteTask: (state, actions) => {
 			const id = actions.payload;
 			state.tasks = state.tasks.filter((item) => item.id !== id);
 			localStorage.setItem('tasks', JSON.stringify(state.tasks));
 		},
+		deleteAllTasks: (state, actions) => {
+			state.tasks = [];
+			localStorage.setItem('tasks', JSON.stringify(state.tasks));
+		},
+		markAllAsDone: (state, actions) => {
+			state.tasks = state.tasks.filter((item) => {
+				if (item.isDone === false) {
+					item.isDone = true;
+				}
+				return item;
+			});
+			localStorage.setItem('tasks', JSON.stringify(state.tasks));
+		},
+		markAllAsUndone: (state, actions) => {
+			state.tasks = state.tasks.filter((item) => {
+				if (item.isDone === true) {
+					item.isDone = false;
+				}
+				return item;
+			});
+			localStorage.setItem('tasks', JSON.stringify(state.tasks));
+		},
 	},
 });
 
-export const { addTask, toggleTheme, toggleTask, updateProgress, deleteTask } = streakSlice.actions;
+export const { addTask, toggleTheme, toggleTask, updateProgress, deleteTask, deleteAllTasks, markAllAsDone, markAllAsUndone } =
+	streakSlice.actions;
 
 export default streakSlice.reducer;
