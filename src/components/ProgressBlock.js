@@ -4,12 +4,12 @@ import { markAllAsDone, markAllAsUndone, updateProgress } from '../reducer';
 import Modal from './Modal';
 
 const ProgressBlock = () => {
+	const [isModalActive, setIsModalActive] = useState(false);
+
 	const dispatch = useDispatch();
 	const doneTasks = useSelector((state) => state.streak.doneTasksCount);
 	const progress = useSelector((state) => state.streak.progress);
 	const doneTasksBool = useSelector((state) => state.streak.doneTasksBool);
-
-	const [isModalActive, setIsModalActive] = useState(false);
 
 	return (
 		<>
