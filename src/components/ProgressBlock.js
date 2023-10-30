@@ -49,7 +49,11 @@ const ProgressBlock = () => {
 				</div>
 			</div>
 			{isModalActive && (
-				<Modal header="Are you sure you want to delete all tasks?" text={``} setIsModalActive={setIsModalActive} />
+				<Modal
+					header="Are you sure that you want to delete all of the tasks?"
+					text={``}
+					setIsModalActive={setIsModalActive}
+				/>
 			)}
 		</>
 	);
