@@ -23,7 +23,7 @@ const ProgressBlock = () => {
 							<span className="font-bold">Progress:</span> {progress}%
 						</span>
 					</div>
-					<div className="flex flex-row items-center gap-3">
+					<div className="flex flex-col md:flex-row items-center gap-3">
 						<button
 							className="btn btn-error"
 							onClick={() => {
