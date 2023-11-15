@@ -7,13 +7,11 @@ const Footer = () => {
 				<div>
 					<div className="indicator">
 						<span className="indicator-item badge badge-accent font-bold">v1.1.3</span>
-						<img src="logo.svg" alt="Logo" className='w-14 h-14' />
+						<img src="logo.svg" alt="Logo" className="w-14 h-14" />
 					</div>
-					<p>
-						DZOBAN Industries
-						<hr className='w-full my-1' />
-						Providing reliable tech since 2023
-					</p>
+					<p>DZOBAN Industries</p>
+					<hr className="w-full my-1" />
+					<p>Providing reliable tech since 2023</p>
 				</div>
 				<div>
 					<h4 className="uppercase font-bold mb-2 opacity-50">Social</h4>

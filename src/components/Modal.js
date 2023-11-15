@@ -18,6 +18,7 @@ const Modal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
 								<button
 									className="btn btn-error"
 									onClick={() => {
+										document.documentElement.style.overflow = 'auto';
 										dispatch(deleteTask(taskId));
 										dispatch(updateProgress());
 										setShowAlert(true);
@@ -31,8 +32,8 @@ const Modal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
 								<button
 									className="btn btn-ghost"
 									onClick={() => {
-										setIsModalActive(false);
 										document.documentElement.style.overflow = 'auto';
+										setIsModalActive(false);
 									}}>
 									Cancel
 								</button>

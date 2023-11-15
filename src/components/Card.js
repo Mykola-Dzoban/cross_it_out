@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import ConfettiExplosion from 'react-confetti-explosion';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -7,6 +8,7 @@ const Card = () => {
 	const showSuccessModal = useSelector((state) => state.streak.showSuccessModal);
 	const tasks = useSelector((state) => state.streak.tasks);
 	const theme = useSelector((state) => state.streak.theme);
+	const doneTasksBool = useSelector((state) => state.streak.doneTasksBool);
 
 	useEffect(() => {
 		if (showSuccessModal) {
@@ -23,7 +25,7 @@ const Card = () => {
 			data-tip={`Finish ${tasks.length === 1 ? 'task' : 'tasks'} and cross this word`}>
 			<div className="card w-auto glass ">
 				<div className="card-body">
-					<div className="w-full flex gap-1 flex-wrap  relative">
+					<div className="w-full flex gap-1 flex-wrap relative">
 						{progress !== 0 && (
 							<progress
 								className="progress progress-error w-full absolute top-[50%] z-50 transition"
@@ -31,6 +33,7 @@ const Card = () => {
 								max="100"></progress>
 						)}
 						<span className="text-7xl z-0 md:text-9xl">CROSS</span>
+						{doneTasksBool && <ConfettiExplosion duration={2000} className="absolute left-[50%]" />}
 					</div>
 				</div>
 			</div>
