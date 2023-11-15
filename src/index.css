@@ -11,7 +11,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	animation: welcomeBlock 2s ease-in-out forwards;
+	animation: welcomeBlock 0.7s ease-in-out forwards;
 }
 
 @keyframes welcomeBlock {
@@ -32,7 +32,7 @@
 .welcome-text {
 	line-height: 0;
 	text-align: center;
-	animation: welcomeText 2s ease-in-out forwards;
+	animation: welcomeText 0.7s ease-in-out forwards;
 }
 @keyframes welcomeText {
 	0% {
@@ -49,7 +49,7 @@
 	position: absolute;
 	height: 0.75rem;
 	border-radius: 0.375rem;
-	animation: welcomeCross 5s ease-in-out forwards;
+	animation: welcomeCross 1.3s ease-in-out forwards;
 }
 @keyframes welcomeCross {
 	0% {
