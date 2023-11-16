@@ -5,6 +5,7 @@ import Card from './Card';
 import Form from './Form';
 import ProgressBlock from './ProgressBlock';
 import Tasks from './Tasks';
+import { LayoutDashboard, PenLine } from 'lucide-react';
 
 const MainPage = () => {
 	const isAuth = useSelector((state) => state.streak.isAuth);
@@ -39,13 +40,33 @@ const MainPage = () => {
 	return (
 		isAuth && (
 			<div className="flex flex-col items-center gap-4 ">
-				<div className="w-full flex justify-between items-center flex-col lg:flex-row gap-4">
+				<div className="w-full flex flex-col justify-center items-center md:flex-row gap-4">
+					<div className="collapse bg-base-200">
+						<input type="checkbox" />
+						<div className="collapse-title text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
+							<PenLine />
+							Add task
+						</div>
+						<div className="collapse-content">
+							<Form tasks={tasks} setIsLoading={setIsLoading} />
+						</div>
+					</div>
+					<div className="collapse bg-base-200">
+						<input type="checkbox" />
+						<div className="collapse-title text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
+							<LayoutDashboard />
+							Dashboard
+						</div>
+						<div className="collapse-content">
+							<ProgressBlock tasks={tasks} setIsLoading={setIsLoading} />
+						</div>
+					</div>
+				</div>
+				<div className="w-full flex justify-center items-center flex-col lg:flex-row gap-4">
 					<Card tasks={tasks} setIsLoading={setIsLoading} />
-					<Form tasks={tasks} setIsLoading={setIsLoading} />
 				</div>
 				{tasks.length !== 0 && (
 					<div className="w-full flex justify-center items-center flex-col gap-7">
-						<ProgressBlock tasks={tasks} setIsLoading={setIsLoading} />
 						<Tasks tasks={tasks} setIsLoading={setIsLoading} />
 					</div>
 				)}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { users } from '../config/firebaseConfig';
 import Modal from './Modal';
@@ -9,7 +9,8 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 	const userId = useSelector((state) => state.streak.userId);
 	const theme = useSelector((state) => state.streak.theme);
 
-	const dispatch = useDispatch();
+	const date = new Date();
+
 	const totalTasks = tasks.length;
 	const doneTasks = tasks.filter((task) => task.isDone).length;
 	const progress = (doneTasks / totalTasks) * 100 || 0;
@@ -49,16 +50,27 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 	return (
 		<>
 			<div className="card w-full bg-base-100 border-2 border-gray-300">
-				<div className="card-body flex flex-col md:flex-row items-center justify-between gap-6">
+				<div className="card-body flex flex-col items-center justify-between gap-6">
 					<div className="flex flex-row items-center gap-6">
 						<span>
-							<span className="font-bold">Done tasks:</span> {doneTasks}
+							<div className="stats stats-vertical lg:stats-horizontal shadow border">
+								<div className="stat">
+									<div className="stat-title">Done</div>
+									<div className="stat-value">{doneTasks}</div>
+								</div>
+
+								<div className="stat">
+									<div className="stat-title">All</div>
+									<div className="stat-value">{totalTasks}</div>								</div>
+							</div>
 						</span>
 						<span>
-							<span className="font-bold">Progress:</span> {progress.toFixed(2)}%
+							<div className="radial-progress text-green-500" style={{ '--value': progress }} role="progressbar">
+								{progress.toFixed(2)}%
+							</div>
 						</span>
 					</div>
-					<div className="flex flex-col md:flex-row items-center gap-3">
+					<div className="flex flex-col xl:flex-row items-center gap-3">
 						<button
 							className="btn btn-error"
 							onClick={() => {

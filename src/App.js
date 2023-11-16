@@ -2,7 +2,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Error from './components/Error';
 import HomeLayout from './components/HomeLayout';
 import MainPage from './components/MainPage';
-import NewRelease from './components/NewRelease';
 import WelcomePage from './components/WelcomePage';
 
 const router = createBrowserRouter([
@@ -18,10 +17,6 @@ const router = createBrowserRouter([
 			{
 				path: '/main',
 				element: <MainPage />,
-			},
-			{
-				path: '/new',
-				element: <NewRelease />,
 			},
 		],
 	},

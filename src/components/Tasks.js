@@ -61,7 +61,7 @@ const Tasks = ({ tasks, setIsLoading }) => {
 												<p className={`text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
 											</div>
 										) : (
-											<p className={`text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
+											<p className={`text-lg md:text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
 										)}
 									</div>
 

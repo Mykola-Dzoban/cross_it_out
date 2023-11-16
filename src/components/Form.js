@@ -31,7 +31,7 @@ const Form = ({ tasks, setIsLoading }) => {
 	};
 
 	return (
-		<div className="card bg-base-100 w-full lg:w-6/12 border-2 border-gray-300">
+		<div className="card bg-base-100 w-full border-2 border-gray-300">
 			<div className="card-body">
 				<div className="flex flex-col w-full gap-4 items-center">
 					<form className="form-control w-full flex flex-col items-center">

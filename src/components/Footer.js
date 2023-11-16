@@ -1,4 +1,4 @@
-import { Github, Twitter } from 'lucide-react';
+import { Twitter } from 'lucide-react';
 
 const Footer = () => {
 	return (
@@ -9,8 +9,7 @@ const Footer = () => {
 						<span className="indicator-item badge badge-accent font-bold">v1.5.0</span>
 						<img src="logo.svg" alt="Logo" className="w-14 h-14" />
 					</div>
-					<p>Hrytsiv Industries</p>
-					<hr className="w-full my-1" />
+
 					<p>Providing reliable tech since 2023</p>
 				</div>
 				<div>
