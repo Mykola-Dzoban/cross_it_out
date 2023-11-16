@@ -11,8 +11,9 @@ const getThemeFromLocalStorage = () => {
 	return theme;
 };
 const getAuthFromLocalStorage = () => {
+	const authSes = sessionStorage.getItem('isAuth');
 	const auth = localStorage.getItem('isAuth');
-	return JSON.parse(auth);
+	return JSON.parse(auth) || JSON.parse(authSes);
 };
 const getUserIdFromLocalStorage = () => {
 	const auth = localStorage.getItem('userId') || '';

@@ -44,6 +44,7 @@ const Tasks = ({ tasks, setIsLoading }) => {
 						const { id, task, isDone, time, edited } = item;
 						return (
 							<div className="w-full" key={id}>
+								<p className="text-xs">{time}</p>
 								<div className="flex items-center justify-between">
 									<div className="flex gap-3 items-center">
 										<input
@@ -65,7 +66,6 @@ const Tasks = ({ tasks, setIsLoading }) => {
 									</div>
 
 									<div className="flex items-center justify-between">
-										<p className="text-xs">{time}</p>
 										<div className="dropdown dropdown-bottom dropdown-left">
 											<label tabIndex={0} className="btn btn-ghost m-1">
 												<MoreHorizontal />
