@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router';
 import Navbar from './Navbar';
 
 const HomeLayout = () => {
+	const isAuth = useSelector((state) => state.streak.isAuth);
+
+	useEffect(() => {
+		console.log('render');
+	}, [isAuth]);
 	return (
 		<>
 			<Navbar />

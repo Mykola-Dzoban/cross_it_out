@@ -1,14 +1,18 @@
-import { FileDiff, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { handleGoogleSignOut } from '../config/firebase';
-import { toggleTheme } from '../reducer';
+import { useNavigate } from 'react-router-dom';
+import { logout, toggleTheme } from '../reducer';
 
 const Navbar = () => {
 	const dispatch = useDispatch();
 	const isAuth = useSelector((state) => state.streak.isAuth);
 
 	const navigate = useNavigate();
+
+	const handleSignOut = async () => {
+		dispatch(logout());
+		navigate('/');
+	};
 
 	const handleTheme = () => {
 		dispatch(toggleTheme());
@@ -20,12 +24,12 @@ const Navbar = () => {
 				<button className="text-3xl font-bold whitespace-normal btn btn-ghost">Cross it out</button>
 			</div>
 			<div className="navbar-end flex items-center sm:justify-end justify-center gap-2">
-				<Link to="/new" className="btn btn-ghost btn-circle">
+				{/* <Link to="/new" className="btn btn-ghost btn-circle">
 					<div className="indicator">
 						<FileDiff />
 						<span className="indicator-item badge badge-accent badge-xs text-[10px]">soon</span>
 					</div>
-				</Link>
+				</Link> */}
 				<label className="swap swap-rotate">
 					<input type="checkbox" onClick={handleTheme} />
 					{/* sun icon */}
@@ -42,7 +46,7 @@ const Navbar = () => {
 						to="/new"
 						className="btn btn-ghost btn-circle"
 						onClick={() => {
-							handleGoogleSignOut(navigate, dispatch);
+							handleSignOut();
 						}}>
 						<LogOut />
 					</button>

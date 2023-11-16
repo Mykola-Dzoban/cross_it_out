@@ -1,11 +1,34 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { editTask, updateProgress } from '../reducer';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { users } from '../config/firebaseConfig';
 
-const EditModal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
-	const dispatch = useDispatch();
+const EditModal = ({ taskId, setIsModalActive, tasks, setIsLoading, header, text }) => {
+	const userId = useSelector((state) => state.streak.userId);
+	const theme = useSelector((state) => state.streak.theme);
 
 	const [task, setTask] = useState(text);
+
+	const date = new Date();
+
+	const handleEditTask = async (taskId, text) => {
+		const updatedTasks = tasks.map((taskItem) => {
+			if (taskItem.id === taskId) {
+				taskItem.task = text;
+				taskItem.time = `${date.toGMTString()}`;
+			}
+			return taskItem;
+		});
+		await users
+			.update({ id: userId, tasks: [...updatedTasks] })
+			.then((res) => {
+				setIsLoading(true);
+				toast.warn('Task edited successfully.', {
+					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+				});
+			})
+			.catch((err) => console.log(err));
+	};
 
 	const handleTask = (e) => {
 		e.preventDefault();
@@ -31,13 +54,9 @@ const EditModal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => 
 							<button
 								className="btn btn-error"
 								onClick={() => {
-									dispatch(editTask({ id: taskId, task }));
-									dispatch(updateProgress());
-									setShowAlert(true);
-									setTimeout(() => {
-										setShowAlert(false);
-									}, 2000);
+									handleEditTask(taskId, task);
 									setIsModalActive(false);
+									document.documentElement.style.overflow = 'auto';
 								}}>
 								Edit
 							</button>
