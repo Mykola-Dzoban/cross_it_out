@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router';
-import Footer from './Footer';
 import Navbar from './Navbar';
 
 const HomeLayout = () => {
@@ -9,7 +8,7 @@ const HomeLayout = () => {
 			<div className="container mx-auto py-10 min-h-[100vh]">
 				<Outlet />
 			</div>
-			<Footer />
+			{/* <Footer /> */}
 		</>
 	);
 };
