@@ -1,11 +1,38 @@
-import { useDispatch } from 'react-redux';
-import { deleteAllTasks, deleteTask, updateProgress } from '../reducer';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { users } from '../config/firebaseConfig';
 
-const Modal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
-	const dispatch = useDispatch();
+const Modal = ({ taskId, tasks, setIsModalActive, setIsLoading, header, text }) => {
+	const userId = useSelector((state) => state.streak.userId);
+	const theme = useSelector((state) => state.streak.theme);
 
-    if (taskId) {
-        return (
+	const handleDeletingAllTasks = async () => {
+		await users
+			.update({ id: userId, tasks: [] })
+			.then((res) => {
+				setIsLoading(true);
+				toast.warn('All tasks deleted successfully.', {
+					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+				});
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const handleDeletingTask = async (taskId) => {
+		const updatedTasks = tasks.filter((taskItem) => taskItem.id !== taskId);
+		await users
+			.update({ id: userId, tasks: [...updatedTasks] })
+			.then((res) => {
+				setIsLoading(true);
+				toast.warn('Task deleted successfully.', {
+					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+				});
+			})
+			.catch((err) => console.log(err));
+	};
+
+	if (taskId) {
+		return (
 			<div className="fixed inset-0 bg-gray-500 bg-opacity-75 backdrop-blur z-10">
 				<div className="absolute w-full h-full flex items-center justify-center">
 					<div className="card w-80 md:w-96 bg-red-200 text-slate-700">
@@ -19,12 +46,7 @@ const Modal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
 									className="btn btn-error"
 									onClick={() => {
 										document.documentElement.style.overflow = 'auto';
-										dispatch(deleteTask(taskId));
-										dispatch(updateProgress());
-										setShowAlert(true);
-										setTimeout(() => {
-											setShowAlert(false);
-										}, 2000);
+										handleDeletingTask(taskId);
 										setIsModalActive(false);
 									}}>
 									Delete
@@ -43,7 +65,7 @@ const Modal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
 				</div>
 			</div>
 		);
-    }
+	}
 
 	return (
 		<div className="fixed inset-0 bg-gray-500 bg-opacity-75 backdrop-blur z-10">
@@ -58,8 +80,8 @@ const Modal = ({ taskId, setIsModalActive, setShowAlert, header, text }) => {
 							<button
 								className="btn btn-error"
 								onClick={() => {
-									dispatch(deleteAllTasks());
-									dispatch(updateProgress());
+									document.documentElement.style.overflow = 'auto';
+									handleDeletingAllTasks();
 									setIsModalActive(false);
 								}}>
 								Delete

@@ -4,11 +4,12 @@ import ConfettiExplosion from 'react-confetti-explosion';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { users } from '../config/firebaseConfig';
+import { login } from '../reducer';
 
 const WelcomePage = () => {
-	const dispatch = useDispatch();
 	const isAuth = useSelector((state) => state.streak.isAuth);
-	// const user = useSelector((state) => state.streak.user);
+
+	const dispatch = useDispatch();
 
 	const [isExploding, setIsExploding] = useState(false);
 	const [isStart, setIsStart] = useState(false);
@@ -36,15 +37,23 @@ const WelcomePage = () => {
 					} else {
 						try {
 							const user = await users.loginWithGoogle();
-							console.log('Logged in user:', user);
+							dispatch(login());
+							localStorage.setItem('userId', JSON.stringify(user.id));
 							navigate('/main');
 						} catch (error) {
 							console.error('Error during Google login:', error);
 						}
 					}
 				}}>
-				<LogIn />
-				Google
+				{isAuth ? (
+					<>
+						<LogIn /> Enter
+					</>
+				) : (
+					<>
+						<LogIn /> Google
+					</>
+				)}
 			</button>
 		</div>
 	);

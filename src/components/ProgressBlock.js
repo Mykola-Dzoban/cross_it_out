@@ -1,15 +1,50 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { markAllAsDone, markAllAsUndone, updateProgress } from '../reducer';
+import { toast } from 'react-toastify';
+import { users } from '../config/firebaseConfig';
 import Modal from './Modal';
 
-const ProgressBlock = () => {
+const ProgressBlock = ({ tasks, setIsLoading }) => {
 	const [isModalActive, setIsModalActive] = useState(false);
+	const userId = useSelector((state) => state.streak.userId);
+	const theme = useSelector((state) => state.streak.theme);
 
 	const dispatch = useDispatch();
-	const doneTasks = useSelector((state) => state.streak.doneTasksCount);
-	const progress = useSelector((state) => state.streak.progress);
-	const doneTasksBool = useSelector((state) => state.streak.doneTasksBool);
+	const totalTasks = tasks.length;
+	const doneTasks = tasks.filter((task) => task.isDone).length;
+	const progress = (doneTasks / totalTasks) * 100 || 0;
+	const doneTasksBool = progress === 100;
+
+	const markAllAsDone = async () => {
+		const updatedTasks = tasks.map((item) => {
+			item.isDone = true;
+			return item;
+		});
+		await users
+			.update({ id: userId, tasks: [...updatedTasks] })
+			.then((res) => {
+				setIsLoading(true);
+				toast.warn('All tasks are done.', {
+					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+				});
+			})
+			.catch((err) => console.log(err));
+	};
+	const markAllAsUndone = async () => {
+		const updatedTasks = tasks.map((item) => {
+			item.isDone = false;
+			return item;
+		});
+		await users
+			.update({ id: userId, tasks: [...updatedTasks] })
+			.then((res) => {
+				setIsLoading(true);
+				toast.warn('All tasks are undone.', {
+					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+				});
+			})
+			.catch((err) => console.log(err));
+	};
 
 	return (
 		<>
@@ -20,7 +55,7 @@ const ProgressBlock = () => {
 							<span className="font-bold">Done tasks:</span> {doneTasks}
 						</span>
 						<span>
-							<span className="font-bold">Progress:</span> {progress}%
+							<span className="font-bold">Progress:</span> {progress.toFixed(2)}%
 						</span>
 					</div>
 					<div className="flex flex-col md:flex-row items-center gap-3">
@@ -36,12 +71,10 @@ const ProgressBlock = () => {
 							className="btn btn-neutral"
 							onClick={() => {
 								if (doneTasksBool) {
-									dispatch(markAllAsUndone());
+									markAllAsUndone();
 								} else {
-									dispatch(markAllAsDone());
+									markAllAsDone();
 								}
-
-								dispatch(updateProgress());
 							}}>
 							{doneTasksBool ? 'Mark all as undone' : 'Mark all as done'}
 						</button>
@@ -53,6 +86,8 @@ const ProgressBlock = () => {
 					header="Are you sure that you want to delete all of the tasks?"
 					text={``}
 					setIsModalActive={setIsModalActive}
+					setIsLoading={setIsLoading}
+					tasks={tasks}
 				/>
 			)}
 		</>

@@ -1,24 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getTasksByUser } from '../config/firebase';
-import { setTasks, toggleTask, updateProgress, updateTasksLayout } from '../reducer';
+import { users } from '../config/firebaseConfig';
 import EditModal from './EditModal';
 import Modal from './Modal';
 
-const Tasks = () => {
-	const dispatch = useDispatch();
+const Tasks = ({ tasks, setIsLoading }) => {
 	const theme = useSelector((state) => state.streak.theme);
 	const userId = useSelector((state) => state.streak.userId);
-	const tasks = useSelector((state) => state.streak.tasks);
-
-
-	const handleTasks = async () => {
-		const tasksFromDB = await getTasksByUser(userId);
-		dispatch(setTasks({ tasks: JSON.parse(tasksFromDB) }));
-	};
 
 	const [isModalActive, setIsModalActive] = useState(false);
 	const [isEditModalActive, setIsEditModalActive] = useState(false);
@@ -26,27 +17,24 @@ const Tasks = () => {
 	const [taskIdToEdit, setTaskIdToEdit] = useState(null);
 	const [taskNameToDelete, setTaskNameToDelete] = useState(null);
 	const [taskNameToEdit, setTaskNameToEdit] = useState(null);
-	const [showAlert, setShowAlert] = useState(false);
-	const [showEditAlert, setShowEditAlert] = useState(false);
 
-	useEffect(() => {
-		if (showAlert) {
-			toast.warn('Task deleted.', {
-				theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
-			});
-		}
-		if (showEditAlert) {
-			toast.warn('Task edited successfully.', {
-				theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [showAlert, showEditAlert]);
-
-	useEffect(() => {
-		handleTasks();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const handleEditingTask = async (id, isDone) => {
+		const updatedTasks = tasks.map((taskItem) => {
+			if (taskItem.id === id) {
+				taskItem.isDone = !isDone;
+			}
+			return taskItem;
+		});
+		await users
+			.update({ id: userId, tasks: [...updatedTasks] })
+			.then((res) => {
+				setIsLoading(true);
+				toast.warn('Task edited successfully.', {
+					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
+				});
+			})
+			.catch((err) => console.log(err));
+	};
 
 	return (
 		<>
@@ -62,11 +50,7 @@ const Tasks = () => {
 											type="checkbox"
 											checked={isDone}
 											className="checkbox checkbox-secondary checkbox-sm"
-											onChange={() => {
-												dispatch(toggleTask(id));
-												dispatch(updateProgress());
-												dispatch(updateTasksLayout());
-											}}
+											onChange={() => handleEditingTask(id, isDone)}
 										/>
 										{edited ? (
 											<div className="indicator">
@@ -132,9 +116,10 @@ const Tasks = () => {
 				<Modal
 					header="Are you sure you want to delete this task?"
 					text={taskNameToDelete}
+					tasks={tasks}
 					taskId={taskIdToDelete}
 					setIsModalActive={setIsModalActive}
-					setShowAlert={setShowAlert}
+					setIsLoading={setIsLoading}
 				/>
 			)}
 			{isEditModalActive && (
@@ -143,7 +128,8 @@ const Tasks = () => {
 					text={taskNameToEdit}
 					taskId={taskIdToEdit}
 					setIsModalActive={setIsEditModalActive}
-					setShowAlert={setShowEditAlert}
+					setIsLoading={setIsLoading}
+					tasks={tasks}
 				/>
 			)}
 		</>
