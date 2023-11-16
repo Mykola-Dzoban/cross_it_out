@@ -1,9 +1,8 @@
+import { LogIn } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { handleGoogleSignIn } from '../config/firebase';
-import { LogIn } from 'lucide-react';
 import { users } from '../config/firebaseConfig';
 
 const WelcomePage = () => {
@@ -31,14 +30,14 @@ const WelcomePage = () => {
 			</div>
 			<button
 				className={`btn btn-primary font-bold ${isStart ? 'flex' : 'hidden'}`}
-				onClick={async() => {
+				onClick={async () => {
 					if (isAuth) {
 						navigate('/main');
 					} else {
-						// handleGoogleSignIn(navigate, dispatch);
 						try {
 							const user = await users.loginWithGoogle();
 							console.log('Logged in user:', user);
+							navigate('/main');
 						} catch (error) {
 							console.error('Error during Google login:', error);
 						}
