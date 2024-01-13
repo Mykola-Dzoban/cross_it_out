@@ -18,9 +18,9 @@ const Footer = () => {
 						{/* <a href="https://github.com/Mykola-Dzoban" target="_blank" rel="noreferrer" className="btn btn-ghost">
 							<Github />
 						</a> */}
-						<a href="https://twitter.com/gushidomo" target="_blank" rel="noreferrer" className="btn btn-ghost">
+						{/* <a href="https://twitter.com/gushidomo" target="_blank" rel="noreferrer" className="btn btn-ghost">
 							<Twitter />
-						</a>
+						</a> */}
 					</div>
 				</div>
 			</div>
