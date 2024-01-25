@@ -1,4 +1,4 @@
-import { Twitter } from 'lucide-react';
+import { Github, Twitter } from 'lucide-react';
 
 const Footer = () => {
 	return (
@@ -15,12 +15,12 @@ const Footer = () => {
 				<div>
 					<h4 className="uppercase font-bold mb-2 opacity-50">Social</h4>
 					<div className="grid grid-flow-col gap-4">
-						{/* <a href="https://github.com/Mykola-Dzoban" target="_blank" rel="noreferrer" className="btn btn-ghost">
+						<a href="https://github.com/Mykola-Dzoban" target="_blank" rel="noreferrer" className="btn btn-ghost">
 							<Github />
-						</a> */}
-						{/* <a href="https://twitter.com/gushidomo" target="_blank" rel="noreferrer" className="btn btn-ghost">
+						</a>
+						<a href="https://twitter.com/gushidomo" target="_blank" rel="noreferrer" className="btn btn-ghost">
 							<Twitter />
-						</a> */}
+						</a>
 					</div>
 				</div>
 			</div>

@@ -1,6 +1,7 @@
 import { LogOut } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { users } from '../config/firebaseConfig';
 import { logout, toggleTheme } from '../reducer';
 
 const Navbar = () => {
@@ -45,8 +46,9 @@ const Navbar = () => {
 					<button
 						to="/new"
 						className="btn btn-ghost btn-circle"
-						onClick={() => {
+						onClick={async () => {
 							handleSignOut();
+							await users.logout();
 						}}>
 						<LogOut />
 					</button>

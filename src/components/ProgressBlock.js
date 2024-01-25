@@ -9,7 +9,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 	const userId = useSelector((state) => state.streak.userId);
 	const theme = useSelector((state) => state.streak.theme);
 
-	const date = new Date();
+	// const date = new Date();
 
 	const totalTasks = tasks.length;
 	const doneTasks = tasks.filter((task) => task.isDone).length;
@@ -61,7 +61,8 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 
 								<div className="stat">
 									<div className="stat-title">All</div>
-									<div className="stat-value">{totalTasks}</div>								</div>
+									<div className="stat-value">{totalTasks}</div>{' '}
+								</div>
 							</div>
 						</span>
 						<span>

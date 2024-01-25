@@ -8,7 +8,7 @@ const Card = ({ tasks, setIsLoading }) => {
 
 	return (
 		<div
-			className="brounded-2xl tooltip tooltip-bottom h-full w-72 sm:w-auto"
+			className="rounded-2xl tooltip tooltip-bottom h-full w-72 sm:w-auto"
 			data-tip={`Finish ${tasks.length === 1 ? 'task' : 'tasks'} and cross this word`}>
 			<div className="card w-full backdrop-opacity-10 backdrop-invert bg-white/10 ">
 				<div className="card-body">

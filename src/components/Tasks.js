@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { Badge } from 'perkslab-ui';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -44,7 +45,10 @@ const Tasks = ({ tasks, setIsLoading }) => {
 						const { id, task, isDone, time, edited } = item;
 						return (
 							<div className="w-full" key={id}>
-								<p className="text-xs">{time}</p>
+								<Badge type="primary" className="text-zinc-950 text-xs">
+									{time}
+								</Badge>
+								<p className=""></p>
 								<div className="flex items-center justify-between">
 									<div className="flex gap-3 items-center">
 										<input
