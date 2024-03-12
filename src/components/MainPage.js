@@ -1,11 +1,12 @@
+import { LayoutDashboard, PenLine } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionTrigger } from 'perkslab-ui';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { users } from '../config/firebaseConfig';
-import Card from './Card';
+import CrossCard from './Card';
 import Form from './Form';
 import ProgressBlock from './ProgressBlock';
 import Tasks from './Tasks';
-import { LayoutDashboard, PenLine } from 'lucide-react';
 
 const MainPage = () => {
 	const isAuth = useSelector((state) => state.streak.isAuth);
@@ -41,29 +42,31 @@ const MainPage = () => {
 		isAuth && (
 			<div className="flex flex-col items-center gap-4 ">
 				<div className="w-full flex flex-col justify-center items-center md:flex-row gap-4">
-					<div className="collapse bg-base-200">
-						<input type="checkbox" />
-						<div className="collapse-title text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
-							<PenLine />
-							Add task
-						</div>
-						<div className="collapse-content">
+					<Accordion className="w-1/2">
+						<AccordionTrigger>
+							<div className="text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
+								<PenLine />
+								Add task
+							</div>
+						</AccordionTrigger>
+						<AccordionContent>
 							<Form tasks={tasks} setIsLoading={setIsLoading} />
-						</div>
-					</div>
-					<div className="collapse bg-base-200">
-						<input type="checkbox" />
-						<div className="collapse-title text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
-							<LayoutDashboard />
-							Dashboard
-						</div>
-						<div className="collapse-content">
+						</AccordionContent>
+					</Accordion>
+					<Accordion className="w-1/2">
+						<AccordionTrigger>
+							<div className="text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
+								<LayoutDashboard />
+								Dashboard
+							</div>
+						</AccordionTrigger>
+						<AccordionContent>
 							<ProgressBlock tasks={tasks} setIsLoading={setIsLoading} />
-						</div>
-					</div>
+						</AccordionContent>
+					</Accordion>
 				</div>
 				<div className="w-full flex justify-center items-center flex-col lg:flex-row gap-4">
-					<Card tasks={tasks} setIsLoading={setIsLoading} />
+					<CrossCard tasks={tasks} setIsLoading={setIsLoading} />
 				</div>
 				{tasks.length !== 0 && (
 					<div className="w-full flex justify-center items-center flex-col gap-7">
