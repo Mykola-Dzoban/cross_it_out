@@ -11,7 +11,7 @@ const Form = ({ tasks, setIsLoading }) => {
 
 	const [task, setTask] = useState('');
 
-	const date = new Date().toDateString();
+	// const date = new Date().toDateString();
 
 	const handleTasksAdding = async (data) => {
 		const updatedTasks = [...tasks, data];
@@ -40,7 +40,7 @@ const Form = ({ tasks, setIsLoading }) => {
 				</form>
 				<div>
 					<Button
-						className=""
+						className="uppercase font-semibold"
 						type="primary"
 						onClick={async () => {
 							if (task?.trim()) {

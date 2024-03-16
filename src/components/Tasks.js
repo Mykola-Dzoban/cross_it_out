@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { Badge, Button } from 'perkslab-ui';
+import { Badge, Button, Checkbox } from 'perkslab-ui';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -42,7 +42,7 @@ const Tasks = ({ tasks, setIsLoading }) => {
 			<div className=" w-full bg-base-100 border-2 border-zinc-600 p-3">
 				<div className="flex flex-col items-center">
 					{tasks.map((item) => {
-						const { id, task, isDone, time, edited } = item;
+						const { id, task, isDone, time } = item;
 						return (
 							<div className="w-full" key={id}>
 								<Badge type="primary" className="text-zinc-950 text-xs">
@@ -51,15 +51,9 @@ const Tasks = ({ tasks, setIsLoading }) => {
 								<p className=""></p>
 								<div className="flex items-center justify-between">
 									<div className="flex gap-3 items-center">
-										<input type="checkbox" checked={isDone} className="" onChange={() => handleEditingTask(id, isDone)} />
-										{edited ? (
-											<div className="indicator">
-												<span className="indicator-item badge badge-xs badge-secondary text-[10px]">edited</span>
-												<p className={`text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
-											</div>
-										) : (
-											<p className={`text-lg md:text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
-										)}
+										<Checkbox type="checkbox" checked={isDone} className="" onChange={() => handleEditingTask(id, isDone)} />
+
+										<p className={`text-lg md:text-xl ${isDone ? 'line-through' : ''}`}>{task}</p>
 									</div>
 
 									<div className="flex items-center justify-between">
@@ -69,10 +63,11 @@ const Tasks = ({ tasks, setIsLoading }) => {
 													<MoreHorizontal />
 												</label>
 											</Button>
-											<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
+											<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 w-52 gap-2">
 												<li>
-													<a
-														className="bg-red-400 hover:bg-red-600 text-slate-100 font-bold"
+													<Button
+														type="error"
+														className="w-full"
 														onClick={() => {
 															setIsModalActive(true);
 															document.documentElement.style.overflow = 'hidden';
@@ -80,22 +75,21 @@ const Tasks = ({ tasks, setIsLoading }) => {
 															setTaskNameToDelete(task);
 														}}>
 														<Trash2 /> Delete task
-													</a>
+													</Button>
 												</li>
 												<li>
-													<a
+													<Button
+														type="success"
+														className="w-full"
 														onClick={() => {
 															setIsEditModalActive(true);
 															document.documentElement.style.overflow = 'hidden';
 															setTaskIdToEdit(id);
 															setTaskNameToEdit(task);
 														}}>
-														<div className="indicator">
-															<span className="indicator-item badge badge-accent font-bold">beta</span>
-															<Pencil />
-														</div>
+														<Pencil />
 														Edit task
-													</a>
+													</Button>
 												</li>
 											</ul>
 										</div>
