@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { Badge } from 'perkslab-ui';
+import { Badge, Button } from 'perkslab-ui';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -39,8 +39,8 @@ const Tasks = ({ tasks, setIsLoading }) => {
 
 	return (
 		<>
-			<div className="card w-full bg-base-100 border-2 border-gray-300">
-				<div className="card-body flex flex-col items-center">
+			<div className=" w-full bg-base-100 border-2 border-zinc-600 p-3">
+				<div className="flex flex-col items-center">
 					{tasks.map((item) => {
 						const { id, task, isDone, time, edited } = item;
 						return (
@@ -51,17 +51,10 @@ const Tasks = ({ tasks, setIsLoading }) => {
 								<p className=""></p>
 								<div className="flex items-center justify-between">
 									<div className="flex gap-3 items-center">
-										<input
-											type="checkbox"
-											checked={isDone}
-											className="checkbox checkbox-secondary checkbox-sm"
-											onChange={() => handleEditingTask(id, isDone)}
-										/>
+										<input type="checkbox" checked={isDone} className="" onChange={() => handleEditingTask(id, isDone)} />
 										{edited ? (
 											<div className="indicator">
-												<span className="indicator-item badge badge-xs badge-secondary text-[10px]">
-													edited
-												</span>
+												<span className="indicator-item badge badge-xs badge-secondary text-[10px]">edited</span>
 												<p className={`text-2xl ${isDone ? 'line-through' : ''}`}>{task}</p>
 											</div>
 										) : (
@@ -71,12 +64,12 @@ const Tasks = ({ tasks, setIsLoading }) => {
 
 									<div className="flex items-center justify-between">
 										<div className="dropdown dropdown-bottom dropdown-left">
-											<label tabIndex={0} className="btn btn-ghost m-1">
-												<MoreHorizontal />
-											</label>
-											<ul
-												tabIndex={0}
-												className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
+											<Button type="ghost" className="w-fit px-2 cursor-pointer">
+												<label tabIndex={0} className="cursor-pointer">
+													<MoreHorizontal />
+												</label>
+											</Button>
+											<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
 												<li>
 													<a
 														className="bg-red-400 hover:bg-red-600 text-slate-100 font-bold"
@@ -98,11 +91,9 @@ const Tasks = ({ tasks, setIsLoading }) => {
 															setTaskNameToEdit(task);
 														}}>
 														<div className="indicator">
-															<span className="indicator-item badge badge-accent font-bold">
-																beta
-															</span>
+															<span className="indicator-item badge badge-accent font-bold">beta</span>
 															<Pencil />
-														</div>{' '}
+														</div>
 														Edit task
 													</a>
 												</li>
@@ -110,7 +101,7 @@ const Tasks = ({ tasks, setIsLoading }) => {
 										</div>
 									</div>
 								</div>
-								<div className="divider"></div>
+								<div className="border-b border-zinc-600 my-2"></div>
 							</div>
 						);
 					})}

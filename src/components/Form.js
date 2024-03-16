@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { Button, Input, Label } from 'perkslab-ui';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -31,43 +32,31 @@ const Form = ({ tasks, setIsLoading }) => {
 	};
 
 	return (
-		<div className="card bg-base-100 w-full border-2 border-gray-300">
-			<div className="card-body">
-				<div className="flex flex-col w-full gap-4 items-center">
-					<form className="form-control w-full flex flex-col items-center">
-						<label className="label">
-							<span className="label-text">What is your task for today?</span>
-						</label>
-						<input
-							onChange={(e) => handleTask(e)}
-							value={task}
-							type="text"
-							placeholder="Type here"
-							className={`input input-bordered w-full max-w-xs`}
-						/>
-						<label className="label">
-							<span className="label-text-alt">{date}</span>
-						</label>
-					</form>
-					<div>
-						<button
-							className="btn btn-primary"
-							onClick={async () => {
-								if (task?.trim()) {
-									const date = new Date();
-									handleTasksAdding({
-										id: nanoid(),
-										task: task.trim(),
-										isDone: false,
-										time: `${date.toUTCString()}`,
-										edited: false,
-									});
-									setTask('');
-								}
-							}}>
-							add task
-						</button>
-					</div>
+		<div className="w-full">
+			<div className="flex flex-col w-full gap-4 items-center">
+				<form className="w-full flex flex-col items-center gap-2">
+					<Label>What is your task for today?</Label>
+					<Input onChange={(e) => handleTask(e)} value={task} type="text" placeholder="Type here" className={`w-full max-w-xs`} />
+				</form>
+				<div>
+					<Button
+						className=""
+						type="primary"
+						onClick={async () => {
+							if (task?.trim()) {
+								const date = new Date();
+								handleTasksAdding({
+									id: nanoid(),
+									task: task.trim(),
+									isDone: false,
+									time: date.toUTCString(),
+									edited: false,
+								});
+								setTask('');
+							}
+						}}>
+						add task
+					</Button>
 				</div>
 			</div>
 		</div>
