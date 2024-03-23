@@ -1,12 +1,16 @@
+import { Button } from 'perkslab-ui';
 import { useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { users } from '../config/firebaseConfig';
 import Modal from './Modal';
 
 const ProgressBlock = ({ tasks, setIsLoading }) => {
+	const auth = useAuthUser();
+
 	const [isModalActive, setIsModalActive] = useState(false);
-	const userId = useSelector((state) => state.streak.userId);
+
 	const theme = useSelector((state) => state.streak.theme);
 
 	// const date = new Date();
@@ -22,7 +26,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 			return item;
 		});
 		await users
-			.update({ id: userId, tasks: [...updatedTasks] })
+			.update({ id: auth?.userId, tasks: [...updatedTasks] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('All tasks are done.', {
@@ -37,7 +41,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 			return item;
 		});
 		await users
-			.update({ id: userId, tasks: [...updatedTasks] })
+			.update({ id: auth?.userId, tasks: [...updatedTasks] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('All tasks are undone.', {
@@ -49,39 +53,42 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 
 	return (
 		<>
-			<div className="card w-full bg-base-100 border-2 border-gray-300">
-				<div className="card-body flex flex-col items-center justify-between gap-6">
+			<div className="w-full ">
+				<div className="flex flex-col items-center justify-between gap-6">
 					<div className="flex flex-row items-center gap-6">
-						<span>
-							<div className="stats stats-vertical lg:stats-horizontal shadow border">
-								<div className="stat">
-									<div className="stat-title">Done</div>
-									<div className="stat-value">{doneTasks}</div>
+						{/* <span className="h-fit">
+							<div className="shadow border h-auto">
+								<div className="">
+									<div className="">Done</div>
+									<div className="">{doneTasks}</div>
 								</div>
 
-								<div className="stat">
-									<div className="stat-title">All</div>
-									<div className="stat-value">{totalTasks}</div>{' '}
+								<div className="">
+									<div className="">All</div>
+									<div className="">{totalTasks}</div>{' '}
 								</div>
 							</div>
-						</span>
-						<span>
+						</span> */}
+						{/* <span>
 							<div className="radial-progress text-green-500" style={{ '--value': progress }} role="progressbar">
 								{progress.toFixed(2)}%
 							</div>
-						</span>
+						</span> */}
+						<span className="font-bold uppercase text-3xl">Soon</span>
 					</div>
 					<div className="flex flex-col xl:flex-row items-center gap-3">
-						<button
-							className="btn btn-error"
+						<Button
+							type="error"
+							className=""
 							onClick={() => {
 								setIsModalActive(true);
 								document.documentElement.style.overflow = 'hidden';
 							}}>
 							Delete all tasks
-						</button>
-						<button
-							className="btn btn-neutral"
+						</Button>
+						<Button
+							type="neutral"
+							className=""
 							onClick={() => {
 								if (doneTasksBool) {
 									markAllAsUndone();
@@ -90,7 +97,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 								}
 							}}>
 							{doneTasksBool ? 'Mark all as undone' : 'Mark all as done'}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>
