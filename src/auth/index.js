@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import createStore from 'react-auth-kit/createStore';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
-import { firebaseAuth, firebaseProvider, users } from '../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import { firebaseAuth, firebaseProvider, users } from '../config/firebaseConfig';
 
 export const authStore = createStore({
 	authName: '_auth',
@@ -65,7 +65,8 @@ export const useLogin = () => {
 				name: userInfo?.displayName ?? undefined,
 				email: userInfo?.email ?? undefined,
 				image: userInfo?.photoURL ?? undefined,
-				isAdmin: user.isAdmin,
+				isAdmin: user?.isAdmin,
+				userId: user?.id,
 			});
 		} catch (error) {
 			console.error(error);

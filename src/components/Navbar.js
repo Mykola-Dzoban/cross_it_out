@@ -2,13 +2,11 @@ import { LogOut } from 'lucide-react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../auth';
-import { users } from '../config/firebaseConfig';
 
 const Navbar = () => {
 	const { onSignOut } = useLogin();
 
 	const auth = useAuthUser();
-	console.log(auth);
 
 	return (
 		<div className="navbar flex flex-col sm:flex-row justify-between border-b-2 border-zinc-700 container mx-auto py-5">
@@ -24,7 +22,7 @@ const Navbar = () => {
 						className="btn btn-ghost btn-circle"
 						onClick={async () => {
 							onSignOut();
-							await users.logout();
+							// await users.logout();
 						}}>
 						<LogOut />
 					</button>

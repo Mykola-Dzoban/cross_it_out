@@ -1,13 +1,16 @@
 import { Button } from 'perkslab-ui';
 import { useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { users } from '../config/firebaseConfig';
 import Modal from './Modal';
 
 const ProgressBlock = ({ tasks, setIsLoading }) => {
+	const auth = useAuthUser();
+
 	const [isModalActive, setIsModalActive] = useState(false);
-	const userId = useSelector((state) => state.streak.userId);
+
 	const theme = useSelector((state) => state.streak.theme);
 
 	// const date = new Date();
@@ -23,7 +26,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 			return item;
 		});
 		await users
-			.update({ id: userId, tasks: [...updatedTasks] })
+			.update({ id: auth?.userId, tasks: [...updatedTasks] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('All tasks are done.', {
@@ -38,7 +41,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 			return item;
 		});
 		await users
-			.update({ id: userId, tasks: [...updatedTasks] })
+			.update({ id: auth?.userId, tasks: [...updatedTasks] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('All tasks are undone.', {

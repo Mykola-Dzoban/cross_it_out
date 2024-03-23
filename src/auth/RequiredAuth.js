@@ -6,7 +6,6 @@ const RequiredAuth = ({ children, callbackPath = '/welcome', needAdmin = false, 
 	const isAuthenticated = useIsAuthenticated();
 	const isAuth = isAuthenticated();
 	const auth = useAuthUser();
-	// console.log(isAuth);
 
 	if (!isAuth) {
 		return <Navigate to={callbackPath} replace />;

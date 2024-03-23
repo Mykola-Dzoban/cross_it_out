@@ -1,15 +1,14 @@
-import { LayoutDashboard, PenLine } from 'lucide-react';
+import { PenLine } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionTrigger } from 'perkslab-ui';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { users } from '../config/firebaseConfig';
 import CrossCard from './Card';
 import Form from './Form';
-import ProgressBlock from './ProgressBlock';
 import Tasks from './Tasks';
 
 const MainPage = () => {
-	const id = useSelector((state) => state.streak.userId);
+	const auth = useAuthUser();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [tasks, setTasks] = useState([]);
@@ -26,8 +25,8 @@ const MainPage = () => {
 					.catch((err) => console.log(err));
 			}
 		};
-		fetchUser(id);
-	}, [isLoading, id]);
+		fetchUser(auth?.userId);
+	}, [isLoading, auth?.userId]);
 
 	if (isLoading) {
 		return (
@@ -39,6 +38,9 @@ const MainPage = () => {
 
 	return (
 		<div className="flex flex-col items-center gap-4 ">
+			<div className="w-full flex justify-center items-center flex-col lg:flex-row gap-4">
+				<CrossCard tasks={tasks} setIsLoading={setIsLoading} />
+			</div>
 			<div className="w-full flex flex-col justify-center items-center md:flex-row gap-4">
 				<Accordion className="w-11/12 md:w-1/2">
 					<AccordionTrigger>
@@ -51,7 +53,7 @@ const MainPage = () => {
 						<Form tasks={tasks} setIsLoading={setIsLoading} />
 					</AccordionContent>
 				</Accordion>
-				<Accordion className=" w-11/12 md:w-1/2">
+				{/* <Accordion className=" w-11/12 md:w-1/2">
 					<AccordionTrigger>
 						<div className="text-center text-xl font-medium flex flex-row items-center justify-center gap-3">
 							<LayoutDashboard />
@@ -61,11 +63,9 @@ const MainPage = () => {
 					<AccordionContent>
 						<ProgressBlock tasks={tasks} setIsLoading={setIsLoading} />
 					</AccordionContent>
-				</Accordion>
+				</Accordion> */}
 			</div>
-			<div className="w-full flex justify-center items-center flex-col lg:flex-row gap-4">
-				<CrossCard tasks={tasks} setIsLoading={setIsLoading} />
-			</div>
+
 			{tasks.length !== 0 && (
 				<div className="w-full flex justify-center items-center flex-col gap-7">
 					<Tasks tasks={tasks} setIsLoading={setIsLoading} />

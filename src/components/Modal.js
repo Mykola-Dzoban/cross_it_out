@@ -1,14 +1,15 @@
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { users } from '../config/firebaseConfig';
 
 const Modal = ({ taskId, tasks, setIsModalActive, setIsLoading, header, text }) => {
-	const userId = useSelector((state) => state.streak.userId);
+	const auth = useAuthUser();
 	const theme = useSelector((state) => state.streak.theme);
 
 	const handleDeletingAllTasks = async () => {
 		await users
-			.update({ id: userId, tasks: [] })
+			.update({ id: auth?.userId, tasks: [] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('All tasks deleted successfully.', {
@@ -21,7 +22,7 @@ const Modal = ({ taskId, tasks, setIsModalActive, setIsLoading, header, text }) 
 	const handleDeletingTask = async (taskId) => {
 		const updatedTasks = tasks.filter((taskItem) => taskItem.id !== taskId);
 		await users
-			.update({ id: userId, tasks: [...updatedTasks] })
+			.update({ id: auth?.userId, tasks: [...updatedTasks] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('Task deleted successfully.', {
@@ -38,9 +39,7 @@ const Modal = ({ taskId, tasks, setIsModalActive, setIsLoading, header, text }) 
 					<div className="card w-80 md:w-96 bg-red-200 text-slate-700">
 						<div className="card-body items-center text-center">
 							<h2 className="card-title">{header}</h2>
-							<p className={`w-full py-2 border-b border-t border-slate-600 font-semibold ${text ? '' : 'hidden'}`}>
-								"{text}"
-							</p>
+							<p className={`w-full py-2 border-b border-t border-slate-600 font-semibold ${text ? '' : 'hidden'}`}>"{text}"</p>
 							<div className="card-actions justify-end">
 								<button
 									className="btn btn-error"
@@ -73,9 +72,7 @@ const Modal = ({ taskId, tasks, setIsModalActive, setIsLoading, header, text }) 
 				<div className="card w-80 md:w-96 bg-red-200 text-slate-700">
 					<div className="card-body items-center text-center">
 						<h2 className="card-title">{header}</h2>
-						<p className={`w-full py-2 border-b border-t border-slate-600 font-semibold ${text ? '' : 'hidden'}`}>
-							"{text}"
-						</p>
+						<p className={`w-full py-2 border-b border-t border-slate-600 font-semibold ${text ? '' : 'hidden'}`}>"{text}"</p>
 						<div className="card-actions justify-end">
 							<button
 								className="btn btn-error"

@@ -2,6 +2,7 @@
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { Badge, Button, Checkbox } from 'perkslab-ui';
 import { useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { users } from '../config/firebaseConfig';
@@ -9,8 +10,8 @@ import EditModal from './EditModal';
 import Modal from './Modal';
 
 const Tasks = ({ tasks, setIsLoading }) => {
+	const auth = useAuthUser();
 	const theme = useSelector((state) => state.streak.theme);
-	const userId = useSelector((state) => state.streak.userId);
 
 	const [isModalActive, setIsModalActive] = useState(false);
 	const [isEditModalActive, setIsEditModalActive] = useState(false);
@@ -27,7 +28,7 @@ const Tasks = ({ tasks, setIsLoading }) => {
 			return taskItem;
 		});
 		await users
-			.update({ id: userId, tasks: [...updatedTasks] })
+			.update({ id: auth?.userId, tasks: [...updatedTasks] })
 			.then((res) => {
 				setIsLoading(true);
 				toast.warn('Task edited successfully.', {
