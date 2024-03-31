@@ -14,10 +14,16 @@ const CrossCard = ({ tasks, refetchTasks }) => {
 			<Card>
 				<CardContent className="w-full">
 					<div className="w-full flex gap-1 flex-wrap relative items-center justify-center">
-						{progress !== 0 && (
-							<progress className="w-full absolute top-[50%] z-50 transition" value={progress} max="100"></progress>
-						)}
-						<span className="text-6xl text-center sm:text-7xl z-0 md:text-9xl">CROSS</span>
+						<span className="text-6xl text-center sm:text-7xl z-0 md:text-9xl">
+							{progress !== 0 && (
+								<progress
+									className="w-full absolute top-[50%] z-50 transition h-2 md:h-4"
+									value={progress}
+									min="0"
+									max="100"></progress>
+							)}
+							CROSS
+						</span>
 						{doneTasksBool && <ConfettiExplosion duration={2000} className="absolute left-[50%]" />}
 					</div>
 				</CardContent>
