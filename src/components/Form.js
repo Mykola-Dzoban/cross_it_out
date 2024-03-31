@@ -1,24 +1,21 @@
-import { nanoid } from 'nanoid';
 import { Button, Input, Label } from 'perkslab-ui';
 import { useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { users } from '../config/firebaseConfig';
+import { dbTasks } from '../config/firebaseConfig';
 
-const Form = ({ tasks, setIsLoading }) => {
-	const id = useSelector((state) => state.streak.userId);
+const Form = ({ tasks, refetchTasks, projectId }) => {
+	const auth = useAuthUser();
 	const theme = useSelector((state) => state.streak.theme);
 
 	const [task, setTask] = useState('');
 
-	// const date = new Date().toDateString();
-
 	const handleTasksAdding = async (data) => {
-		const updatedTasks = [...tasks, data];
-		await users
-			.update({ id, tasks: updatedTasks })
+		await dbTasks
+			.create(data)
 			.then((res) => {
-				setIsLoading(true);
+				refetchTasks?.();
 				toast.success('task added', {
 					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
 				});
@@ -41,16 +38,15 @@ const Form = ({ tasks, setIsLoading }) => {
 				<div>
 					<Button
 						className="uppercase font-semibold"
-						type="primary"
+						variant="primary"
 						onClick={async () => {
 							if (task?.trim()) {
 								const date = new Date();
 								handleTasksAdding({
-									id: nanoid(),
-									task: task.trim(),
+									text: task.trim(),
 									isDone: false,
-									time: date.toUTCString(),
-									edited: false,
+									createdAt: date.toUTCString(),
+									projectId: projectId,
 								});
 								setTask('');
 							}

@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import store from './store';
 
 export const App = () => {
-	console.log(process.env);
 	return (
 		<Provider store={store}>
 			<Navbar />

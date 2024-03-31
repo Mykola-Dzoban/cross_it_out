@@ -4,7 +4,7 @@ import createStore from 'react-auth-kit/createStore';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { useNavigate } from 'react-router-dom';
-import { firebaseAuth, firebaseProvider, users } from '../config/firebaseConfig';
+import { dbUsers, firebaseAuth, firebaseProvider } from '../config/firebaseConfig';
 
 export const authStore = createStore({
 	authName: '_auth',
@@ -40,7 +40,7 @@ export const useLogin = () => {
 
 	const onSignInWithGoogle = useCallback(async () => {
 		try {
-			const usersFirestore = await users.getAll();
+			const usersFirestore = await dbUsers.getAll();
 
 			const result = await signInWithPopup(firebaseAuth, firebaseProvider);
 			// const additionalResult = getAdditionalUserInfo(result);
@@ -51,22 +51,22 @@ export const useLogin = () => {
 			const user = usersFirestore?.find((user) => user?.email === userInfo?.email);
 
 			if (!user) {
-				await users.create({
-					displayName: userInfo?.displayName ?? undefined,
-					email: userInfo?.email ?? undefined,
-					image: userInfo?.photoURL ?? undefined,
-					isAdmin: false,
-					tasks: [],
+				await dbUsers.createUser({
+					id: userInfo?.uid,
+					displayName: userInfo?.displayName,
+					online: true,
+					email: userInfo?.email,
 				});
 			}
 
 			onSubmit(result?.user?.accessToken ?? undefined, {
-				id: userInfo?.uid ?? undefined,
+				uid: userInfo?.uid ?? undefined,
 				name: userInfo?.displayName ?? undefined,
 				email: userInfo?.email ?? undefined,
 				image: userInfo?.photoURL ?? undefined,
 				isAdmin: user?.isAdmin,
 				userId: user?.id,
+				ownerId: user?.ownerId,
 			});
 		} catch (error) {
 			console.error(error);

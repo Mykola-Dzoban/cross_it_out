@@ -12,6 +12,9 @@ const WelcomePage = () => {
 	const [isExploding, setIsExploding] = useState(false);
 	const [isStart, setIsStart] = useState(false);
 
+	const devMode = process.env.NODE_ENV === 'production';
+
+
 	useEffect(() => {
 		setTimeout(() => {
 			setIsExploding(true);
@@ -26,28 +29,30 @@ const WelcomePage = () => {
 				<div className="welcome-cross bg-red-700"></div>
 				{isExploding && <ConfettiExplosion duration={2000} className="absolute" />}
 			</div>
-			<Button
-				type="primary"
-				className={` items-center gap-2 ${isStart ? 'flex' : 'hidden'}`}
-				onClick={async () => {
-					try {
-						onSignInWithGoogle();
-					} catch (error) {
-						console.error('Error during Google login:', error);
-					}
-				}}>
-				{auth ? (
-					<>
-						<LogIn />
-						Enter
-					</>
-				) : (
-					<>
-						<LogIn />
-						Google
-					</>
-				)}
-			</Button>
+			{devMode && (
+				<Button
+					variant="primary"
+					className={` items-center gap-2 ${isStart ? 'flex' : 'hidden'}`}
+					onClick={async () => {
+						try {
+							onSignInWithGoogle();
+						} catch (error) {
+							console.error('Error during Google login:', error);
+						}
+					}}>
+					{auth ? (
+						<>
+							<LogIn />
+							Enter
+						</>
+					) : (
+						<>
+							<LogIn />
+							Google
+						</>
+					)}
+				</Button>
+			)}
 		</div>
 	);
 };

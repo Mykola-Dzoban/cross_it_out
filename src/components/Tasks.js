@@ -1,16 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { Badge, Button, Checkbox } from 'perkslab-ui';
 import { useState } from 'react';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { users } from '../config/firebaseConfig';
+import { dbTasks } from '../config/firebaseConfig';
 import EditModal from './EditModal';
 import Modal from './Modal';
 
-const Tasks = ({ tasks, setIsLoading }) => {
-	const auth = useAuthUser();
+const Tasks = ({ tasks, refetchTasks }) => {
 	const theme = useSelector((state) => state.streak.theme);
 
 	const [isModalActive, setIsModalActive] = useState(false);
@@ -21,16 +19,10 @@ const Tasks = ({ tasks, setIsLoading }) => {
 	const [taskNameToEdit, setTaskNameToEdit] = useState(null);
 
 	const handleEditingTask = async (id, isDone) => {
-		const updatedTasks = tasks.map((taskItem) => {
-			if (taskItem.id === id) {
-				taskItem.isDone = !isDone;
-			}
-			return taskItem;
-		});
-		await users
-			.update({ id: auth?.userId, tasks: [...updatedTasks] })
+		await dbTasks
+			.update({ id: id, isDone: !isDone })
 			.then((res) => {
-				setIsLoading(true);
+				refetchTasks?.();
 				toast.warn('Task edited successfully.', {
 					theme: `${theme === 'myDark' ? 'dark' : 'light'}`,
 				});
@@ -40,60 +32,48 @@ const Tasks = ({ tasks, setIsLoading }) => {
 
 	return (
 		<>
-			<div className=" w-full bg-base-100 border-2 border-zinc-600 p-3">
+			<div className=" w-full bg-base-100 p-3">
 				<div className="flex flex-col items-center">
 					{tasks.map((item) => {
-						const { id, task, isDone, time } = item;
+						const { id, text, isDone, createdAt } = item;
 						return (
 							<div className="w-full" key={id}>
-								<Badge type="primary" className="text-zinc-950 text-xs">
-									{time}
+								<Badge type="primary" className="text-zinc-950 text-xs flex items-center gap-1">
+									<span className="font-bold">Created at: </span>
+									{createdAt}
 								</Badge>
 								<p className=""></p>
 								<div className="flex items-center justify-between">
 									<div className="flex gap-3 items-center">
 										<Checkbox type="checkbox" checked={isDone} className="" onChange={() => handleEditingTask(id, isDone)} />
 
-										<p className={`text-lg md:text-xl ${isDone ? 'line-through' : ''}`}>{task}</p>
+										<p className={`text-lg md:text-xl ${isDone ? 'line-through' : ''}`}>{text}</p>
 									</div>
 
-									<div className="flex items-center justify-between">
-										<div className="dropdown dropdown-bottom dropdown-left">
-											<Button type="ghost" className="w-fit px-2 cursor-pointer">
-												<label tabIndex={0} className="cursor-pointer">
-													<MoreHorizontal />
-												</label>
-											</Button>
-											<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 w-52 gap-2">
-												<li>
-													<Button
-														type="error"
-														className="w-full"
-														onClick={() => {
-															setIsModalActive(true);
-															document.documentElement.style.overflow = 'hidden';
-															setTaskIdToDelete(id);
-															setTaskNameToDelete(task);
-														}}>
-														<Trash2 /> Delete task
-													</Button>
-												</li>
-												<li>
-													<Button
-														type="success"
-														className="w-full"
-														onClick={() => {
-															setIsEditModalActive(true);
-															document.documentElement.style.overflow = 'hidden';
-															setTaskIdToEdit(id);
-															setTaskNameToEdit(task);
-														}}>
-														<Pencil />
-														Edit task
-													</Button>
-												</li>
-											</ul>
-										</div>
+									<div className="flex gap-2 items-center justify-between">
+										<Button
+											variant="error"
+											className="p-2 flex items-center gap-2"
+											onClick={() => {
+												setIsModalActive(true);
+												document.documentElement.style.overflow = 'hidden';
+												setTaskIdToDelete(id);
+												setTaskNameToDelete(text);
+											}}>
+											<Trash2 className="size-4 md:size-6" />
+										</Button>
+
+										<Button
+											variant="success"
+											className="p-2 flex items-center gap-2"
+											onClick={() => {
+												setIsEditModalActive(true);
+												document.documentElement.style.overflow = 'hidden';
+												setTaskIdToEdit(id);
+												setTaskNameToEdit(text);
+											}}>
+											<Pencil className="size-4 md:size-6" />
+										</Button>
 									</div>
 								</div>
 								<div className="border-b border-zinc-600 my-2"></div>
@@ -106,10 +86,9 @@ const Tasks = ({ tasks, setIsLoading }) => {
 				<Modal
 					header="Are you sure you want to delete this task?"
 					text={taskNameToDelete}
-					tasks={tasks}
 					taskId={taskIdToDelete}
 					setIsModalActive={setIsModalActive}
-					setIsLoading={setIsLoading}
+					refetchTasks={refetchTasks}
 				/>
 			)}
 			{isEditModalActive && (
@@ -118,8 +97,7 @@ const Tasks = ({ tasks, setIsLoading }) => {
 					text={taskNameToEdit}
 					taskId={taskIdToEdit}
 					setIsModalActive={setIsEditModalActive}
-					setIsLoading={setIsLoading}
-					tasks={tasks}
+					refetchTasks={refetchTasks}
 				/>
 			)}
 		</>

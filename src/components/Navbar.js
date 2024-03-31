@@ -9,20 +9,17 @@ const Navbar = () => {
 	const auth = useAuthUser();
 
 	return (
-		<div className="navbar flex flex-col sm:flex-row justify-between border-b-2 border-zinc-700 container mx-auto py-5">
-			<div className="navbar-center">
-				<Link to="/" className="text-2xl font-bold whitespace-normal uppercase">
-					Cross it out
+		<div className="border-b-2 border-zinc-700 container mx-auto py-5">
+			<div className="flex justify-between flex-col sm:flex-row ">
+				<Link to="/" className="text-2xl font-bold whitespace-normal flex items-center">
+					CrossChronicle
 				</Link>
-			</div>
-			<div className="navbar-end flex items-center sm:justify-end justify-center gap-2">
 				{auth && (
 					<button
 						to="/new"
 						className="btn btn-ghost btn-circle"
 						onClick={async () => {
 							onSignOut();
-							// await users.logout();
 						}}>
 						<LogOut />
 					</button>

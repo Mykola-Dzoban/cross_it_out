@@ -78,7 +78,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 					</div>
 					<div className="flex flex-col xl:flex-row items-center gap-3">
 						<Button
-							type="error"
+							variant="error"
 							className=""
 							onClick={() => {
 								setIsModalActive(true);
@@ -87,7 +87,7 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 							Delete all tasks
 						</Button>
 						<Button
-							type="neutral"
+							variant="neutral"
 							className=""
 							onClick={() => {
 								if (doneTasksBool) {
