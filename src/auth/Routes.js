@@ -1,12 +1,12 @@
 import { memo } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 import Error from '../components/Error';
-import WelcomePage from '../components/WelcomePage';
 import Dashboard from '../pages/dashboard/dashboard';
 import Project from '../pages/project/project';
 import { urlConfig } from '../utils/urlConfig';
 import RequiredAuth from './RequiredAuth';
 import ThrowAuth from './ThrowAuth';
+import WelcomePage from '../pages/welcome/WelcomePage';
 
 export const Routes = memo(() => {
 	return useRoutes([

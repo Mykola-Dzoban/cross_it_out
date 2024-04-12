@@ -38,7 +38,7 @@ const Tasks = ({ tasks, refetchTasks }) => {
 						const { id, text, isDone, createdAt } = item;
 						return (
 							<div className="w-full" key={id}>
-								<Badge type="primary" className="text-zinc-950 text-xs flex items-center gap-1">
+								<Badge variant="primary" className="text-zinc-950 text-xs flex items-center gap-1">
 									<span className="font-bold">Created at: </span>
 									{createdAt}
 								</Badge>

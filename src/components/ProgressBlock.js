@@ -56,24 +56,6 @@ const ProgressBlock = ({ tasks, setIsLoading }) => {
 			<div className="w-full ">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<div className="flex flex-row items-center gap-6">
-						{/* <span className="h-fit">
-							<div className="shadow border h-auto">
-								<div className="">
-									<div className="">Done</div>
-									<div className="">{doneTasks}</div>
-								</div>
-
-								<div className="">
-									<div className="">All</div>
-									<div className="">{totalTasks}</div>{' '}
-								</div>
-							</div>
-						</span> */}
-						{/* <span>
-							<div className="radial-progress text-green-500" style={{ '--value': progress }} role="progressbar">
-								{progress.toFixed(2)}%
-							</div>
-						</span> */}
 						<span className="font-bold uppercase text-3xl">Soon</span>
 					</div>
 					<div className="flex flex-col xl:flex-row items-center gap-3">

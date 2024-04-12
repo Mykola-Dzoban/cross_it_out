@@ -1,12 +1,10 @@
 import { Button, Input, Label } from 'perkslab-ui';
 import { useState } from 'react';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { dbTasks } from '../config/firebaseConfig';
 
 const Form = ({ tasks, refetchTasks, projectId }) => {
-	const auth = useAuthUser();
 	const theme = useSelector((state) => state.streak.theme);
 
 	const [task, setTask] = useState('');

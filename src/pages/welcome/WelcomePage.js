@@ -3,7 +3,7 @@ import { Button } from 'perkslab-ui';
 import { useEffect, useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import ConfettiExplosion from 'react-confetti-explosion';
-import { useLogin } from '../auth';
+import { useLogin } from '../../auth';
 
 const WelcomePage = () => {
 	const { onSignInWithGoogle } = useLogin();
@@ -48,7 +48,6 @@ const WelcomePage = () => {
 					</>
 				)}
 			</Button>
-			)
 		</div>
 	);
 };
