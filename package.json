@@ -7,7 +7,7 @@
 		"firebase": "^10.5.0",
 		"lucide-react": "^0.288.0",
 		"nanoid": "^5.0.1",
-		"perkslab-ui": "^0.0.19",
+		"perkslab-ui": "^0.0.21",
 		"react": "^18.2.0",
 		"react-auth-kit": "^3.1.2",
 		"react-confetti-explosion": "^2.1.2",

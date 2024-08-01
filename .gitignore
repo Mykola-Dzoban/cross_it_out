@@ -1,4 +1,3 @@
-
 .vscode
 .firebase
 
@@ -24,3 +23,5 @@ yarn-error.log*
 config
 
 package-lock.json
+
+.build
