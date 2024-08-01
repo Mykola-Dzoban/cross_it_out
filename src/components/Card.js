@@ -11,7 +11,7 @@ const CrossCard = ({ tasks, refetchTasks }) => {
 		<div
 			className="rounded-2xl tooltip tooltip-bottom h-full w-72 sm:w-auto"
 			data-tip={`Finish ${tasks.length === 1 ? 'task' : 'tasks'} and cross this word`}>
-			<Card>
+			<Card className="w-full">
 				<CardContent className="w-full">
 					<div className="w-full flex gap-1 flex-wrap relative items-center justify-center">
 						<span className="text-6xl text-center sm:text-7xl z-0 md:text-9xl">
